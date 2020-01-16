@@ -4,22 +4,23 @@ import gzip
 
 class NN(object):
     def __init__(self,
-                 hidden_dims=(512, 256),
-                 datapath='mnist.pkl.gz',
+                 hidden_dims=(784, 256),
+                 datapath='mnist.pkl',
                  n_classes=10,
                  epsilon=1e-6,
                  lr=7e-4,
-                 batch_size=1000,
+                 batch_size=500,
                  seed=None,
                  activation="relu",
+                 init_method="glorot"
                  ):
 
         self.hidden_dims = hidden_dims
         self.n_hidden = len(hidden_dims)
-        self.datapath = datapath
         self.n_classes = n_classes
         self.lr = lr
         self.batch_size = batch_size
+        self.init_method = init_method
         self.seed = seed
         self.activation_str = activation
         self.epsilon = epsilon
@@ -27,7 +28,7 @@ class NN(object):
         self.train_logs = {'train_accuracy': [], 'validation_accuracy': [], 'train_loss': [], 'validation_loss': []}
 
         self.train, self.valid, self.test = self.load_mnist()
-        
+
     def load_mnist(self):
         data_file = gzip.open("mnist.pkl.gz", "rb")
         train_data, val_data, test_data = pickle.load(data_file, encoding="latin1")
@@ -45,15 +46,6 @@ class NN(object):
         test_data = list(zip(test_inputs, test_data[1]))
 
         return train_data, val_data, test_data
-        
-    def vectorized_result(self, j):
-        """Return a 10-dimensional unit vector with a 1.0 in the jth
-        position and zeroes elsewhere.  This is used to convert a digit
-        (0...9) into a corresponding desired output from the neural
-        network."""
-        e = np.zeros((10, 1))
-        e[j] = 1.0
-        return e
 
     def initialize_weights(self, dims):
         if self.seed is not None:
@@ -131,12 +123,9 @@ class NN(object):
             # WRITE CODE HERE
             pass
 
-    def one_hot(self, y):
-        # For handeling labels
-        # Used in, e.g. compute_loss_and_accuracy()
-        # WRITE CODE HERE
-        pass
-        return 0
+    def one_hot(self, y, n_classes=None):
+        n_classes = n_classes or self.n_classes
+        return np.eye(n_classes)[y]
 
     def loss(self, prediction, labels):
         prediction[np.where(prediction < self.epsilon)] = self.epsilon
