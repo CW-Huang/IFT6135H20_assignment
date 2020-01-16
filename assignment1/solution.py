@@ -2,22 +2,45 @@ import pickle
 import numpy as np
 import gzip
 
+
+def one_hot(y, n_classes=10):
+    return np.eye(n_classes)[y]
+
+def load_mnist():
+    data_file = gzip.open("mnist.pkl.gz", "rb")
+    train_data, val_data, test_data = pickle.load(data_file, encoding="latin1")
+    data_file.close()
+
+    train_inputs = [np.reshape(x, (784, 1)) for x in train_data[0]]
+    train_results = [one_hot(y, 10) for y in train_data[1]]
+    train_data = np.array(train_inputs).reshape(-1, 784), np.array(train_results).reshape(-1, 10)
+
+    val_inputs = [np.reshape(x, (784, 1)) for x in val_data[0]]
+    val_results = [one_hot(y, 10) for y in val_data[1]]
+    val_data = np.array(val_inputs).reshape(-1, 784), np.array(val_results).reshape(-1, 10)
+
+    test_inputs = [np.reshape(x, (784, 1)) for x in test_data[0]]
+    test_data = list(zip(test_inputs, test_data[1]))
+
+    return train_data, val_data, test_data
+
+# train_data_, val_data_, test_data_ = load_mnist()
+
+
 class NN(object):
     def __init__(self,
                  hidden_dims=(784, 256),
-                 datapath='mnist.pkl',
-                 n_classes=10,
                  epsilon=1e-6,
                  lr=7e-4,
-                 batch_size=500,
+                 batch_size=64,
                  seed=None,
                  activation="relu",
-                 init_method="glorot"
+                 init_method="glorot",
+                 data=None
                  ):
 
         self.hidden_dims = hidden_dims
         self.n_hidden = len(hidden_dims)
-        self.n_classes = n_classes
         self.lr = lr
         self.batch_size = batch_size
         self.init_method = init_method
@@ -27,7 +50,15 @@ class NN(object):
 
         self.train_logs = {'train_accuracy': [], 'validation_accuracy': [], 'train_loss': [], 'validation_loss': []}
 
-        self.train, self.valid, self.test = self.load_mnist()
+        if data is None:
+            # for testing, do NOT remove or modify
+            self.train, self.valid, self.test = (
+                (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400))),
+                (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400))),
+                (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400)))
+            )
+        else:
+            self.train, self.valid, self.test = data
 
     def load_mnist(self):
         data_file = gzip.open("mnist.pkl.gz", "rb")
@@ -123,9 +154,6 @@ class NN(object):
             # WRITE CODE HERE
             pass
 
-    def one_hot(self, y, n_classes=None):
-        n_classes = n_classes or self.n_classes
-        return np.eye(n_classes)[y]
 
     def loss(self, prediction, labels):
         prediction[np.where(prediction < self.epsilon)] = self.epsilon
