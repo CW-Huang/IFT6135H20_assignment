@@ -2,7 +2,6 @@ import pickle
 import numpy as np
 import gzip
 
-
 def one_hot(y, n_classes=10):
     return np.eye(n_classes)[y]
 
@@ -26,7 +25,6 @@ def load_mnist():
 
 # train_data_, val_data_, test_data_ = load_mnist()
 
-
 class NN(object):
     def __init__(self,
                  hidden_dims=(784, 256),
@@ -35,7 +33,6 @@ class NN(object):
                  batch_size=64,
                  seed=None,
                  activation="relu",
-                 init_method="glorot",
                  data=None
                  ):
 
@@ -56,27 +53,10 @@ class NN(object):
                 (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400))),
                 (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400))),
                 (np.random.rand(400, 784), one_hot(np.random.randint(0, 10, 400)))
-            )
+        )
         else:
             self.train, self.valid, self.test = data
 
-    def load_mnist(self):
-        data_file = gzip.open("mnist.pkl.gz", "rb")
-        train_data, val_data, test_data = pickle.load(data_file, encoding="latin1")
-        data_file.close()
-
-        train_inputs = [np.reshape(x, (784, 1)) for x in train_data[0]]
-        train_results = [self.vectorized_result(y) for y in train_data[1]]
-        train_data = np.array(train_inputs).reshape(-1, 784), np.array(train_results).reshape(-1, 10)
-
-        val_inputs = [np.reshape(x, (784, 1)) for x in val_data[0]]
-        val_results = [self.vectorized_result(y) for y in val_data[1]]
-        val_data = np.array(val_inputs).reshape(-1, 784), np.array(val_results).reshape(-1, 10)
-
-        test_inputs = [np.reshape(x, (784, 1)) for x in test_data[0]]
-        test_data = list(zip(test_inputs, test_data[1]))
-
-        return train_data, val_data, test_data
 
     def initialize_weights(self, dims):
         if self.seed is not None:
@@ -154,6 +134,9 @@ class NN(object):
             # WRITE CODE HERE
             pass
 
+    # def one_hot(self, y, n_classes=None):
+    #     n_classes = n_classes or self.n_classes
+    #     return np.eye(n_classes)[y]
 
     def loss(self, prediction, labels):
         prediction[np.where(prediction < self.epsilon)] = self.epsilon
@@ -163,7 +146,7 @@ class NN(object):
         return 0
 
     def compute_loss_and_accuracy(self, X, y):
-        one_y = self.one_hot(y)
+        one_y = y
         cache = self.forward(X)
         predictions = np.argmax(cache[f"Z{self.n_hidden + 1}"], axis=1)
         accuracy = np.mean(y == predictions)
@@ -172,7 +155,7 @@ class NN(object):
 
     def train_loop(self, n_epochs):
         X_train, y_train = self.train
-        y_onehot = self.one_hot(y_train)
+        y_onehot = y_train
         dims = [X_train.shape[1], y_onehot.shape[1]]
         self.initialize_weights(dims)
 
