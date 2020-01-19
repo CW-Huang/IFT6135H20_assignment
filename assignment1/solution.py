@@ -58,7 +58,7 @@ class NN(object):
             self.train, self.valid, self.test = data
 
 
-    def initialize_weights(self, dims):
+    def initialize_weights(self, dims):        
         if self.seed is not None:
             np.random.seed(self.seed)
 
@@ -147,6 +147,7 @@ class NN(object):
 
     def compute_loss_and_accuracy(self, X, y):
         one_y = y
+        y = np.argmax(y, axis=1)  # Change y to integers
         cache = self.forward(X)
         predictions = np.argmax(cache[f"Z{self.n_hidden + 1}"], axis=1)
         accuracy = np.mean(y == predictions)
@@ -182,6 +183,5 @@ class NN(object):
 
     def evaluate(self):
         X_test, y_test = self.test
-        # WRITE CODE HERE
-        pass
-        return 0
+        test_loss, test_accuracy, _ = self.compute_loss_and_accuracy(X_test, y_test)
+        return test_loss, test_accuracy
