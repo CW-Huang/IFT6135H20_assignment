@@ -423,7 +423,7 @@ class MultiHeadedAttention(nn.Module):
         # This method needs to compare query and keys first, then mask positions
         # if a mask is provided, normalize the scores, apply dropout and then
         # retrieve values, in this particular order.
-        # When applying the mask, use values 1e-9 for the masked positions.
+        # When applying the mask, use values -1e9 for the masked positions.
         # The method returns the result of the attention operation as well as
         # the normalized scores after dropout.
         # B is the batch size, T is the sequence length, d_value is the size
