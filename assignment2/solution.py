@@ -5,6 +5,7 @@ import torch.nn.functional as F
 import math, copy, time
 from torch.autograd import Variable
 
+
 # NOTE ==============================================
 #
 # Fill in code for every method which has a TODO
@@ -229,7 +230,7 @@ class GRU(nn.Module): # Implement a stacked GRU RNN
         self.h =
 
         # Dropout
-        self.dropout = 
+        self.dropout =
 
         # The output layer
         self.out_layer =
@@ -399,25 +400,30 @@ class MultiHeadedAttention(nn.Module):
         self.n_units = n_units
         self.n_heads = n_heads
         # TODO ========================
-        # Create the layers below. self.linear should contain n_head linear
+        # Create the layers below. self.linear should contain 3 linear
         # layers that compute the projection from n_units => n_heads x d_k
+        # (one for each of query, key and value) plus an additional final layer
+        # (4 in total)
 
         # Note: that parameters are initialized with Glorot initialization in
         # the make_model function below (so you don't need to implement this
         # yourself).
 
         # Note: the only Pytorch modules you are allowed to use are nn.Linear
-        # and nn.Dropout. You can also use softmax, masked fill and the "clones"
+        # and nn.Dropout. You can also use softmax, masked_fill and the "clones"
         # function we provide.
         self.linears =
         self.dropout =
 
     def attention(self, query, key, value, mask=None, dropout=None):
         # Implement scaled dot product attention
+        # As described in the .tex, apply input masking to the softmax
+        # generating the "attention values" (i.e. A_i in the .tex)
+        # Also apply dropout to the attention values.
         # This method needs to compare query and keys first, then mask positions
         # if a mask is provided, normalize the scores, apply dropout and then
         # retrieve values, in this particular order.
-        # When initializing the mask, use values 1e-9 for the masked positions.
+        # When applying the mask, use values 1e-9 for the masked positions.
         # The method returns the result of the attention operation as well as
         # the normalized scores after dropout.
         # B is the batch size, T is the sequence length, d_value is the size
@@ -439,10 +445,14 @@ class MultiHeadedAttention(nn.Module):
         # query, key, and value correspond to Q, K, and V in the latex, and
         # they all have size: (batch_size, seq_len, self.n_units)
         # mask has size: (batch_size, seq_len, seq_len)
-        # As described in the .tex, apply input masking to the softmax
-        # generating the "attention values" (i.e. A_i in the .tex)
-        # Also apply dropout to the attention values.
+        # This method should call the attention method above
         # TODO ========================
+        # 1) Do all the linear projections in batch from n_units => n_heads x d_k
+
+        # 2) Apply attention on all the projected vectors in batch.
+
+        # 3) "Concat" using a view and apply a final linear.
+
 
         return # size: (batch_size, seq_len, self.n_units)
 
