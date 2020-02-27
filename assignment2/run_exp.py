@@ -17,35 +17,34 @@
 ## GENERAL INSTRUCTIONS
 
 # - We encourage you to read and understand this code; there are some notes and comments to help you.
-# - Typically, all of your code to submit should be written in models.py;
+# - Typically, all of your code to submit should be written in solution.py;
 #  see further instructions at the top of that file / in TODOs.
 #      - GRU recurrent unit
 #      - Multi-head attention for the Transformer
 
-# - Other than this file and solution_template.py, you will probably also write two
-#  scripts. Include these and any other code you write in your git repo for
-#  submission:
-#      - Plotting (learning curves, loss w.r.t. time, gradients w.r.t. hiddens)
-#      - Loading and running a saved model (computing gradients w.r.t. hiddens,
-#        and for sampling from the model)
+# - Other than this file and solution.py, you will probably also need to modify
+# and/or write additional code to create plots (learning curves, loss w.r.t.
+# time, gradients w.r.t. hiddens) and to load a saved model (computing gradients
+# w.r.t. hidden and for sampling from the model). This code will not be graded.
+
 
 # ## PROBLEM-SPECIFIC INSTRUCTIONS:
 #    - For Problem 3.1 the hyperparameter settings you should run are as follows
-#            --model=RNN --optimizer=SGD --initial_lr=1.0 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=40 --save_best 
-#            --model=RNN --optimizer=SGD --initial_lr=1.0 --batch_size=20  --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=40
-#            --model=RNN --optimizer=SGD --initial_lr=10.0 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=40 
-#            --model=RNN --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=40
-#            --model=RNN --optimizer=ADAM --initial_lr=0.0001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=40
+#            --model=RNN --optimizer=SGD --initial_lr=1.0 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=20 --save_best
+#            --model=RNN --optimizer=SGD --initial_lr=1.0 --batch_size=20  --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=20
+#            --model=RNN --optimizer=SGD --initial_lr=10.0 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=20
+#            --model=RNN --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=20
+#            --model=RNN --optimizer=ADAM --initial_lr=0.0001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.8  --num_epochs=20
 
 #    - For Problem 3.2 the hyperparameter settings you should run are as follows
-#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=40 --save_best
-#            --model=GRU --optimizer=SGD  --initial_lr=10.0  --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=40
-#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=20 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=40
+#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=20 --save_best
+#            --model=GRU --optimizer=SGD  --initial_lr=10.0  --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=20
+#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=20 --seq_len=35 --hidden_size=512 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=20
 
 #    - For Problem 3.3 the hyperparameter settings you should run are as follows
-#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=256 --num_layers=2 --dp_keep_prob=0.2  --num_epochs=40
-#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=2048 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=40
-#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=4 --dp_keep_prob=0.5  --num_epochs=40
+#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=256 --num_layers=2 --dp_keep_prob=0.2  --num_epochs=20
+#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=2048 --num_layers=2 --dp_keep_prob=0.5  --num_epochs=20
+#            --model=GRU --optimizer=ADAM --initial_lr=0.001 --batch_size=128 --seq_len=35 --hidden_size=512 --num_layers=4 --dp_keep_prob=0.5  --num_epochs=20
 
 #    - For Problem 3.4 the hyperparameter settings you should run are as follows
 #            --model=TRANSFORMER --optimizer=ADAM --initial_lr=0.0001 --batch_size=128 --seq_len=35 --hidden_size=512  --num_layers=6 --dp_keep_prob=0.9 --num_epochs=20
@@ -53,12 +52,17 @@
 #            --model=TRANSFORMER --optimizer=ADAM --initial_lr=0.0001 --batch_size=128 --seq_len=35 --hidden_size=2048 --num_layers=2 --dp_keep_prob=0.6 --num_epochs=20
 #            --model=TRANSFORMER --optimizer=ADAM --initial_lr=0.0001 --batch_size=128 --seq_len=35 --hidden_size=1024 --num_layers=6 --dp_keep_prob=0.9 --num_epochs=20
 
-#    You are also encouraged to explore the hyperparameter space and try to obtain better validation perplexities than the given settings.
+# You are also encouraged to explore the hyperparameter space and try to obtain
+# better validation perplexities than the given settings.
 #
 
-#    - For Problem 4.1, perform all computations / plots based on saved models from Problem 3.1 and 3.2. Note the --save_best flag for the first set of parameters for each question (Of course you can still save other models than them if you like; just add the flag --save_best). You can modify the loss computation in this script (search for "LOSS COMPUTATION" to find the appropriate line. Remember to submit your code.
-#    - For Problem 4.2, you must implement the generate method of the RNN and GRU.  Implementing this method is not considered part of problem 1
-#      respectively, and will be graded as part of Problem 4.2.
+# - For Problem 4.1, perform all computations / plots based on saved models from
+#   Problem 3.1 and 3.2. Note the --save_best flag for the first set of
+#   parameters for each question (Of course you can still save other models than
+#   them if you like; just add the flag --save_best). You can modify the loss
+#   computation in this script (search for "LOSS COMPUTATION" to find the
+#   appropriate line.
+
 import argparse
 import time
 import collections
@@ -73,9 +77,6 @@ np = numpy
 
 # NOTE ==============================================
 # This is where your models are imported
-# from models import RNN, GRU
-# from models import make_model as TRANSFORMER
-
 from solution import RNN, GRU
 from solution import make_model as TRANSFORMER
 
