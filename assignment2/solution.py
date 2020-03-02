@@ -421,7 +421,7 @@ class MultiHeadedAttention(nn.Module):
         # batch_size x n_heads x seq_len x d_k
         # (If making a single call to attention in your forward method)
         # and mask (if not None) will be of size
-        # batch_size x n_heads x seq_len x seq_len
+        # batch_size x 1 x seq_len x seq_len
 
         # As described in the .tex, apply input masking to the softmax
         # generating the "attention values" (i.e. A_i in the .tex)
@@ -437,6 +437,8 @@ class MultiHeadedAttention(nn.Module):
         # TODO ========================
         scores =
         if mask is not None:
+            if len(mask.size()) == 3 and len(query.size()) == 4:
+                mask.unsqueeze(1)
             scores = scores.masked_fill()
         norm_scores =
         if dropout is not None:
@@ -452,6 +454,9 @@ class MultiHeadedAttention(nn.Module):
         # they all have size: (batch_size, seq_len, self.n_units)
         # mask has size: (batch_size, seq_len, seq_len)
         # This method should call the attention method above
+        if mask is not None:
+            # Same mask applied to all n_heads heads.
+            mask = mask.unsqueeze(1)
         # TODO ========================
         # 1) Do all the linear projections in batch from n_units => n_heads x d_k
 
