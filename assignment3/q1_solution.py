@@ -1,5 +1,5 @@
 """
-Solutions for Question 1 of hwk3.
+Template for Question 1 of hwk3.
 @author: Shawn Tan and Jae Hyun Lim
 """
 import math
