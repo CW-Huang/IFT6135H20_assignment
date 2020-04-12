@@ -50,7 +50,7 @@ def vf_squared_hellinger(x, y, critic):
 
     :param p: (FloatTensor) - shape: (batchsize x 2) - Samples from a distribution p.
     :param q: (FloatTensor) - shape: (batchsize x 2) - Samples from a distribution q.
-    :param critic: (Module) - torch module used to compute the Quarred Hellinger.
+    :param critic: (Module) - torch module used to compute the Squared Hellinger.
     :return: (FloatTensor) - shape: (1,) - Estimate of the Squared Hellinger
     """
     pass
